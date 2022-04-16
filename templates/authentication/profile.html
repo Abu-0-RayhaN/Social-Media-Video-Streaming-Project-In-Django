@@ -1,0 +1,99 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}
+{{profile.user}}'s profile.Watch On
+{% endblock title %}
+{% block css_block %}
+<style>
+  .sign_up{
+      width: 450px;
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin-top: 10px ;
+      border-radius:7px;
+  }
+  .abc{
+      text-align: center;
+      text-decoration: dotted;
+      color: rgb(62, 240, 62);
+      font-size: x-large;
+
+  }
+  body{
+      margin:20px;
+      background-color:black;
+      color:white;
+      
+  }
+  .navbar{
+      font-family:'Comic Sans MS';
+      font-size:20px;
+    }
+</style>
+{% endblock css_block %}
+{% block content %}
+<div class="container">
+    <div class="row pt-3">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6 text-center border border-rounded pt-3" style="border-radius:50px; ">
+            {% if user.user_profile.profile_pic %}
+            <img src="{{user.user_profile.profile_pic.url}}" height="200px" width="150px" class="rounded-circle mx-5">
+            {% else %}
+            <img src="/media/download.png" height="200px" width="150px" class="rounded-circle mx-5">
+            {% endif %}
+            <p><b>{{profile.full_name}}</b></p><button class="btn btn-succes"><a href="{% url 'editprofile' %}">Edit</a></button>
+            <p>{{profile.description|linebreaks}}</p>
+            <p>{{profile.dob}}</p>
+            <p>Personal Website:<a href="{{profile.website}}">Visit</a></p>
+            <p>Social Media:<a href="{{profile.facebook}}">Facebook</a></p>
+            {% comment %} <h6>{{user.post.count}} posts &nbsp;:{{user.follower.count}}&nbsp;following:{{user.following.count}} followers</h6> {% endcomment %}
+        </div>
+        <div class="col-lg-4">
+</div>
+<div class="container">
+<br>
+<div class="row">
+  {% for post in user.post.all %}
+  <div class="col-lg-4 " >
+  <div class="card bg-dark" style="width: 22rem;">
+    {% if post.image %}
+    <img src="/media/{{post.image}}" title="{{post.caption}}" height="250px" width="350px">
+    {% endif %}
+    <div class="card-body">
+      <h5 class="card-title"></h5>
+      <p class="card-text">{{post.caption}}</p>
+      <a href="{% url 'editpost' pk=post.pk %}">Edit</a>
+<br>
+    </div>
+  </div><br>
+  </div>
+  {% endfor %}
+</div>
+
+<!--video-->
+<div class="row">
+  {% for video in user.upload.all %}
+  <div class="col-lg-4 " >
+    <figure class="card card-product">
+      <div class=" video-wrap">
+          <video class="embed-responsive embed-responsive-16by9" controls="controls" controls style="height:250px;">
+              <source src="{{video.videofile.url}}" type="video/mp4" />
+      </div>
+      <figcaption class="info-wrap">
+          <h6 class="title"><a href="{% url 'singlevideo' pk=video.pk cpk=video.category.id %}">{{video.title}}</a></h6>
+          <i style="color:black; font-size:12px;">@{{video.creator}} || {{video.upload_date}}||{{video.category}}</i><a  class="float-right pr-2" href="{% url 'Editvideo' pk=video.pk %}">Edit</a>
+          <div class="action-wrap">
+              <div class="price-wrap ">
+                
+              </div>
+            </div>
+      </figcaption>
+  </figure>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock content %}
+
+

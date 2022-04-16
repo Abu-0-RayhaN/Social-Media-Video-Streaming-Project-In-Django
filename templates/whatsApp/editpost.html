@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Edit Post.Watch On{% endblock title %}
+{% block css_block %}
+<style>
+    .sign_up{
+        width: 450px;
+        border: 1px solid #ccc;
+        padding: 20px;
+        margin-top: 10px ;
+        border-radius:7px;
+    }
+    .abc{
+        text-align: center;
+        text-decoration: dotted;
+        color: rgb(62, 240, 62);
+        font-size: x-large;
+
+    }
+    body{
+        margin:20px;
+        background-color:black;
+        color:white;
+        
+    }
+    .navbar{
+        font-family:'Comic Sans MS';
+        font-size:20px;
+      }
+</style>
+{% endblock css_block %}
+{% block content %}
+
+<div class="container sign_up form">
+    <h1>Edit Post</h1>
+<form enctype="multipart/form-data" method="POST" action="">
+{% csrf_token %}
+{{form|crispy}}
+<br>
+<button type="submit" value="Save Change" class="btn btn-success btn-sm">Save</button>
+</form>
+</div>
+
+{% endblock content %}

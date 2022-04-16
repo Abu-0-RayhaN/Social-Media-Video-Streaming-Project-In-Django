@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Sign Up.Watch On{% endblock title %}
+{% block css_block %}
+<style>
+    .sign_up{
+        width: 450px;
+        border: 1px solid #ccc;
+        padding: 20px;
+        margin-top: 10px ;
+        border-radius:7px;
+        padding-top:20px;
+    }
+    .abc{
+        text-align: center;
+        text-decoration: dotted;
+        color: rgb(62, 240, 62);
+        font-size: x-large;
+
+    }
+    .navbar{
+        font-family:'Comic Sans MS';
+        font-size:20px;
+      }
+    body{
+        margin:20px;
+        margin-top:20px;
+        background-color: black;
+        color:white;
+        
+    }
+</style>
+{% endblock css_block %}
+{% block content %}
+
+<div class="container sign_up">
+    <form method="POST" class="form">
+        <p class="abc text-bolder "><b><i>Sign Up</i></b></p>
+        <p style="padding-left:20px;">{{form|crispy}}</p>
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary ">Sign Up</button>
+    </form><hr>
+    <p>Have an account?<a href="{% url 'authlogin' %}">Log In</a></p>
+
+</div>
+{% endblock content %}

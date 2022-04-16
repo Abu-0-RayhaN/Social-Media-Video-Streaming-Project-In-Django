@@ -1,0 +1,78 @@
+{% extends 'layout.html' %}
+{% block title %}
+Watch On
+{% endblock title %}
+{% block css_block %}
+<style>
+    body{
+        margin:20px;
+        background-color:black;
+        color:white;
+        
+    }
+    .navbar{
+        font-family:'Comic Sans MS';
+        font-size:20px;
+      }
+    .forh2{
+        color:rgb(190, 98, 98);
+        margin-left:200px;
+        padding:20px;
+    }
+</style>
+{% endblock css_block %}
+
+{% block content %}
+<div class="container"><br>
+    
+<!---Categories-->
+<div class="row">
+    <div class="col-lg-10 col-sm-0 col-md-8">
+    <a class="btn btn-danger" href="{% url 'upload_video' %}">Upload</a>
+    </div>
+    <div class="col-lg-2 col-sm-12 col-md-4 ">
+        <div class="dropdown">
+            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Categories
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="{% url 'show_video' %}">All Videos</a>
+            
+              {% for category in category %}
+              <a class="dropdown-item" href="?category={{category.id}}">{{category.title}}</a>
+              
+              {% endfor %}
+            </div>
+          </div>
+    </div>
+    
+</div>
+<!--Videos-->
+<div class="my-5">
+    
+    {% if video %}
+    <h2 class="my-5">Special For You</h2>
+    {% else %}
+    <h2 class="my-5 h2-danger forh2" >There Is No Video Of This Category</h2><a class="forh2"href="{% url 'show_video' %}">Continue Watching</a>
+    {% endif %}
+    <div class="row">{% for video in video %}
+        <div class="col-md-6 col-sm-12 col-lg-4">
+            <figure class="card card-product">
+                <div class=" video-wrap">
+                    <video class="embed-responsive embed-responsive-16by9" controls="controls" controls style="height:250px;">
+                        <source src="{{video.videofile.url}}" type="video/mp4" />
+                </div>
+                <figcaption class="info-wrap">
+                    <h6 class="title"><a href="{% url 'singlevideo' pk=video.pk cpk=video.category.id %}">{{video.title}}</a></h6>
+                    <i style="color:black; font-size:12px;">@{{video.creator}} || {{video.upload_date}}||{{video.category}}</i>
+                    <div class="action-wrap">
+                        <div class="price-wrap h5">
+                </figcaption>
+            </figure>
+        </div>{% endfor %}
+    </div>
+
+</div>
+</div>
+
+{% endblock content %}

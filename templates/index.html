@@ -1,0 +1,54 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Watch On{% endblock title %}
+{% block css_block %}
+<style>
+    .sign_up{
+        width: 450px;
+        border: 1px solid #ccc;
+        padding: 20px;
+        margin-top: 10px ;
+        border-radius:7px;
+    }
+    .abc{
+        text-align: center;
+        text-decoration: dotted;
+        color: rgb(62, 240, 62);
+        font-size: x-large;
+
+    }
+    body{
+        margin:20px;
+        background-color:black;
+        color:white;
+        font-family:'Comic Sans MS';
+        
+    }
+    .navbar{
+        font-family:'Comic Sans MS';
+        font-size:20px;
+      }
+    .front{
+        background: rgb(255, 10, 10);
+    }
+
+</style>
+{% endblock css_block %}
+{% block content %}
+<br>
+<div class=" container row">
+    <div class="col-lg-6 bg-success asdf">
+        <h1 class="asdf">Well Come This New World.this is</h1>
+    </div>
+    <div class="col-lg-6 front">
+        <h3>Explore With {{people}} peoples have joined. {{post}} Posts And {{upload}} Videos Have been uploaded.</h3>
+
+    </div>
+   
+</div>
+<p>Watch And Upload Video<a href="{% url 'show_video' %}">visit</a></p><br>
+<p> Post And See others Postings<a href="{% url 'post' %}">visit</a></p>
+
+
+{% endblock content %}

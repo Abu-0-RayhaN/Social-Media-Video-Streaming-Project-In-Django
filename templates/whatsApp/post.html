@@ -1,0 +1,122 @@
+{% extends 'layout.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}Uploads.Watch On{% endblock title %}
+{% block css_block %}
+<style>
+    .sign_up{
+        width: 450px;
+        border: 1px solid #ccc;
+        padding: 20px;
+        margin-top: 10px ;
+        border-radius:7px;
+    }
+    .abc{
+        text-align: center;
+        text-decoration: dotted;
+        color: rgb(62, 240, 62);
+        font-size: x-large;
+
+    }
+    body{
+        margin:20px;
+        background-color:black;
+        color:white;
+        
+    }
+    .navbar{
+        font-family:'Comic Sans MS';
+        font-size:20px;
+      }
+</style>
+{% endblock css_block %}
+{% block content %}
+
+<div class="container">
+    
+<div class="row">
+  <div class="col-sm-7">
+    <!--posting photos-->
+    <div style="border:1px solid black; border-radius:7px;" class="">
+      <div style="padding:10px;">
+       
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content text-dark">
+      <div class="modal-header float-left">
+        <h4 class="modal-title">What's on your mind?</h4>
+      </div>
+      <div class="modal-body">
+        <form enctype="multipart/form-data" method="POST" action="">
+          {% csrf_token %}
+          {{form|crispy}}
+          <input type="submit" value="post"/>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+      </div>
+    </div>
+    {% for post in posts %}
+    <div style="border:1px solid black; background-color:#afccb4; border-radius:7px;" class="">
+        <div style="padding:10px;">
+    {% if post.author.user_profile.profile_pic %}
+        <img src="/media/{{post.author.user_profile.profile_pic}}" width="75px" height="75px" class="rounded-circle"><nav class="float-right">{{post.upload_date}}</nav>
+        {% else %}
+        <img src="/media/download.png" width="75px" height="75px" class="rounded-circle" alt="dosn't have a profile picutre"><div class="float-right">{{post.upload_date}}</div>
+        {% endif %}<br>
+        <a href="#">{{post.author}}</a><br>
+        {{post.caption}}
+        </div>
+        {% if post.image %}
+        <img src="/media/{{post.image}}" width="100%">
+        {% endif %}
+        <i><b>{{ post.likes_post.count}} love(s)</i></b>
+        <div style="padding:20px;" class="bg-dark">
+            <!--liking posts-->
+            {% if post.pk in like_post %}
+            <a href="{% url 'unliked' pk=post.pk %}"><i class="fa fa-heart" style="font-size:36px;"></i></a>
+            {% else %}
+            <a href="{% url 'liked' pk=post.pk %}"><i class="fa fa-heart-o" style="font-size:36px;"></i></a>
+            {% endif %}
+            <!--comment div-->
+            <div class="float-right">
+            <!-- Trigger the modal with a button -->
+            <a href="{% url 'detail' pk=post.pk %}" type="button" class="">Comments</a>    
+            </div>
+        
+        </div></div><br>
+        {% endfor %}
+    </div>
+    <div class="col-sm-5">
+      <div  style="background-color:#d6cece; height:500px; border:1px solid black; border-radius:40px ">
+        <div class="row">
+           <div class="col-sm-4"><br>
+                {% if user.user_profile.profile_pic %}
+                <a href="{% url 'profile' %}"><img src="/media/{{user.user_profile.profile_pic}}" width="75px" height="75px" class="rounded-circle"></a>
+                {% else %}
+                <a href="{% url 'profile' %}"><img src="/media/download.png" width="75px" height="75px" class="rounded-circle"></a>
+                {% endif %}
+            </div>
+            <div class="col-sm-8"><br>
+                <a href="{% url 'profile' %}">{{user.user_profile.full_name}}</a>
+            </div>
+        </div>
+        <div class="float-center"><br><br>
+           <!-- Trigger the modal with a button -->
+          <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Post</button>
+        </div>
+    </div>
+    </div>
+    
+</div></div>
+
+{% endblock content %}

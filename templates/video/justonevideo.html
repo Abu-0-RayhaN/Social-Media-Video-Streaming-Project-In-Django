@@ -1,0 +1,143 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}{{video.title}}.Watch On{% endblock title %}
+{% block css_block %}
+<style>
+    .sign_up{
+        width: 450px;
+        border: 1px solid #ccc;
+        padding: 20px;
+        margin-top: 10px ;
+        border-radius:7px;
+    }
+    .abc{
+        text-align: center;
+        text-decoration: dotted;
+        color: rgb(62, 240, 62);
+        font-size: x-large;
+
+    }
+    body{
+        margin:20px;
+        background-color:black;
+        color:white;
+        
+    }
+    .navbar{
+        font-family:'Comic Sans MS';
+        font-size:20px;
+      }
+    
+.comment-wrapper .panel-body {
+    max-height:650px;
+    overflow:auto;
+}
+
+.comment-wrapper .media-list .media img {
+    width:64px;
+    height:64px;
+    border:2px solid #e5e7e8;
+}
+
+.comment-wrapper .media-list .media {
+    border-bottom:1px dashed #efefef;
+    margin-bottom:25px;
+}
+</style>
+{% endblock css_block %}
+{% block content %}
+<br>
+<div class="row">
+    
+    <div class="col-lg-9 col-md-12 col-sm-12">
+        {% for video in video %}
+        <figure class="card card-product">
+            <div class=" video-wrap">
+                <video class="embed-responsive embed-responsive-16by9" controls="controls" controls style="height:450px;">
+                    <source src="{{video.videofile.url}}" type="video/mp4" />
+            </div>
+            <figcaption class="info-wrap">
+                <div style="padding:20px;">
+                {% if video.pk in like_post %}
+                <a href="{% url 'unliked' pk=video.pk cpk=video.category.id %}"><i class="fa fa-heart" style="font-size:36px;"></i></a>
+                {% else %}
+                <a href="{% url 'liked' pk=video.pk cpk=video.category.id %}"><i class="fa fa-heart-o" style="font-size:36px;"></i></a>
+                {% endif %}
+            </div>
+                <h6 class="title text-danger">{{video.title}}</h6>
+                <i style="color:black; font-size:12px;">@{{video.creator}} || {{video.upload_date}}||{{video.category}}</i>
+                <div class="action-wrap">
+                    <div class="price-wrap h5">
+                    </div>
+                </div>
+            </figcaption>
+        </figure>
+    </div><!--here comes up the profile-->
+    
+    <div class="row">
+    {% endfor %}
+    {% for video in category_video %}
+    <div class="col-lg-4 ">
+            <figure class="card card-product">
+                <div class=" video-wrap">
+                    <video class="embed-responsive embed-responsive-16by9" controls="controls" controls style="height:150px;">
+                        <source src="{{video.videofile.url}}" type="video/mp4" />
+                </div>
+                <figcaption class="info-wrap">
+                    <h6 class="title"><a href="{% url 'singlevideo' pk=video.pk cpk=video.category.id %}">{{video.title}}</a></h6>
+                    <i style="color:black; font-size:12px;">@{{video.creator}} || {{video.upload_date}}||{{video.category}}</i>
+                    <div class="action-wrap">
+                        <div class="price-wrap h5">
+                </figcaption>
+            </figure>
+        </div>{% endfor %}
+        
+    </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6" >
+            <form method="POST" style="height:100px; width:70px;">
+              {{ form|crispy }}
+              {% csrf_token %}
+              <button type="submit" class="btn btn-primary btn-sm">Comment</button>
+            </form>
+          </div>
+          <div class="col-lg-6 comm">
+
+<div class="row bootstrap snippets bootdeys">
+    <div class="col-md-8 col-sm-12 col-lg-12">
+        <div class="comment-wrapper">
+                    <ul class="media-list">
+                        {% for comments in comment %}
+                        <li class="media">
+                            {% if comments.user.user_profile.profile_pic %}
+                            <img src="{{comments.user.user_profile.profile_pic.url}}" height="100px" width="100px" class="rounded-circle mx-5">
+                            {% else %}
+                            <img src="{% static 'media/download.png' %}" height="100px" width="100px" class="rounded-circle mx-5">
+                             {% endif %}
+                            <div class="media-body">
+                                <span class="text-muted pull-right">
+                                    <small class="text-muted">{{comments.comment_date}}</small>
+                                </span>
+                                <strong class="text-success">@{{comments.user}}</strong>
+                                <p>
+                                    {{comments.comment}}
+                              </p>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+          </div>
+    </div>
+</div>
+
+
+{% endblock content %}
